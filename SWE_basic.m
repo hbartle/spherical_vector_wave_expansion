@@ -152,7 +152,7 @@ for n = 1:N
             n_idx(j) = n;
 
             A = k*sqrt(Z0);
-            A = 1;
+            A = 16*pi;;
             if s==1
                 K_theta(:,j) = A*C *(1i)^(n+1).* 1i .*m.*Ps(:,M(1,:)==abs(m));
                 K_phi(:,j) = -A*C*(1i)^(n+1).* (dP(:,M(1,:)==abs(m)) + Pshifted(:,M(1,:) ==abs(m))); 
@@ -231,7 +231,7 @@ close all
 mode_cutoff = length(q_own);
 %mode_cutoff = 20
 
-A = k*sqrt(Z0/(2*pi));
+A = sqrt(Z0/(2*pi));
 
 % Somehow we have q with inverted phase. For reconstruction use complex
 % conjugate
