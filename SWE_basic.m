@@ -1,6 +1,11 @@
+%% Basic vector far-field spherical wave expansion
+% Implementation of the vectorial far-field spherical wave expansion
+% following FEKO nomenclature and definiton.
 %
-%   Basic Far-field spherical wave expansion
-%
+% Hannes Bartle
+% EPFL Microwaves and Antennas Group
+% 2023
+
 clear all
 close all
 clc
@@ -218,14 +223,14 @@ bar(abs([[q_feko,zeros(length(q_own)-length(q_feko),1)']',q_own']))
 legend(["Feko","Own"])
 grid on
 xlabel("Mode index j")
-title("Magnitude")
+ylabel("Magnitude [\surdW]")
 
 subplot(2,1,2)
 bar(angle([[q_feko,zeros(length(q_own)-length(q_feko),1)']',q_own'])*180/pi)
 legend(["Feko","Own"])          
 grid on
 xlabel("Mode index j")
-title("Phase")
+ylabel("Phase [°]")
 
 %% Compare power contained in all modes
 power_feko = 0.5*sum(abs(q_feko).^2)
@@ -287,19 +292,21 @@ plot(theta(phi==phi_cut)*180/pi,20*log10(abs(sqrt(Eff_theta_reconstructed(phi==p
 %plot(theta(phi==phi_cut)*180/pi,20*log10(abs(Eff_phi_reconstructed(phi==phi_cut))))
 legend(["FEKO","Own"])
 xlabel('Theta [deg]')
+ylabel('Magnitude [dBV]')
+title("E_{abs}, \phi=" + phi_cut*180/pi)
+
 
 figure
 subplot(1,2,1)
 %patternCustom(abs(Eff_theta),theta*180/pi,phi*180/pi)
-patternCustom(abs(Eff_phi),theta*180/pi,phi*180/pi)
-%patternCustom(abs(sqrt(Eff_theta.^2 + Eff_phi.^2)),theta*180/pi,phi*180/pi)
+%patternCustom(abs(Eff_phi),theta*180/pi,phi*180/pi)
+patternCustom(20*log10(abs(sqrt(Eff_theta.^2 + Eff_phi.^2))),theta*180/pi,phi*180/pi)
 title("Feko")
 subplot(1,2,2)
 %patternCustom(abs(Eff_theta_reconstructed),theta*180/pi,phi*180/pi)
-patternCustom(abs(Eff_phi_reconstructed),theta*180/pi,phi*180/pi)
-%patternCustom(abs(sqrt(Eff_theta_reconstructed.^2 + Eff_phi_reconstructed.^2)),theta*180/pi,phi*180/pi)
+%patternCustom(abs(Eff_phi_reconstructed),theta*180/pi,phi*180/pi)
+patternCustom(20*log10(abs(sqrt(Eff_theta_reconstructed.^2 + Eff_phi_reconstructed.^2))),theta*180/pi,phi*180/pi)
 title("Reconstructed")
-
 
 % Quantify error
 E_abs = abs(sqrt(Eff_theta.^2 + Eff_phi.^2));
@@ -309,6 +316,8 @@ E_abs_reconstructed = abs(sqrt(Eff_theta_reconstructed.^2 + Eff_phi_reconstructe
 %E_abs_reconstructed = E_abs_reconstructed/max(E_abs_reconstructed);
 
 delta_rms = sqrt(1/length(E_abs)* sum(abs(E_abs - E_abs_reconstructed).^2 ))
+
+sgtitle(["Pattern Comparison","\Delta_{rms}="+delta_rms])
 
 
 %% Generate FF from any mode
