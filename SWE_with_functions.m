@@ -18,7 +18,7 @@ eps0 = 8.854*1e-12;
 mu0 = 4*pi*1e-7;
 Z0 =sqrt(mu0/eps0);
 
-
+example_folder = "examples/";
 %% Read FEKO SWE coefficients
 file_path = "rect_patch.out";
 %file_path = "RSW_SAR.out";
@@ -34,7 +34,7 @@ file_path = "rect_patch.out";
 % FEKO provides the SWE coefficients in the ".out" file of the simulation.
 % Some annoying manipulation is needed to read the correct lines from this
 % file. 
-lines = strip(readlines(file_path));
+lines = strip(readlines(example_folder+file_path));
 modes_start = find(~cellfun(@isempty,strfind(lines,"FAR FIELD MODAL COEFFICIENTS"))) + 10;
 modes_end = find(cellfun(@isempty,strfind(lines(modes_start:end)," ")));
 modes_end = modes_start +modes_end(1)-2;
@@ -87,7 +87,7 @@ file_path = "rect_patch_FarField1.ffe";
 % file_path = "SWE_surface_wave_modes_FarField1_j_1_6_21_38.ffe";
 %file_path = "SWE_surface_wave_modes_FarField1_multimode_random_mag_phase.ffe";
 
-E_ff=readmatrix(file_path,'FileType','text');
+E_ff=readmatrix(example_folder+file_path,'FileType','text');
 Eff_theta = E_ff(:,3)+1i*E_ff(:,4);
 Eff_phi = E_ff(:,5)+1i*E_ff(:,6);
 theta = E_ff(:,1)*pi/180;
@@ -96,7 +96,7 @@ phi = E_ff(:,2)*pi/180;
 
 %% Read HFSS rE far-field data export
 % file_path = "rE_RSW_SAR_singleprobe_HFSS.csv";
-% E_ff=readmatrix(file_path);
+% E_ff=readmatrix(example_folder+file_path);
 % Eff_theta = E_ff(:,4)+1i*E_ff(:,5);
 % Eff_phi = E_ff(:,6)+1i*E_ff(:,7);
 % theta = E_ff(:,3)*pi/180;
